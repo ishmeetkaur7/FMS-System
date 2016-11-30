@@ -1,6 +1,7 @@
 //@author:Shreya Sharma(2015096) Ishmeet Kaur(2015042)
 import javax.swing.*;
-
+import java.io.*;
+import java.util.*;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -8,16 +9,28 @@ import java.text.SimpleDateFormat;
 
 public class Supervisor extends User {
 	JFrame frame = new JFrame("FMS System : Supervisor "+this.getDepartment());
+	String nameleave= this.getUserName();
 	JPanel mpanel = new JPanel();JPanel kpanel = new JPanel();JPanel mrpanel = new JPanel();
 	JPanel rpanel = new JPanel();JPanel leavepanel = new JPanel();
 	JPanel panel = new JPanel(new FlowLayout());
 	JButton buttons[] = new JButton[6];
+	ArrayList<Leave> leave= new ArrayList<Leave>();
 	String name[] = {"Home","Send Leave","Staff","Requests","Reports","Logout"};
 	String dname[] = {"Electricity","HVAC","Audio/Video","Security","Housekeeping"};
 	JButton b1 = new JButton("Member Requests"); JButton b2 = new JButton("Leave Requests"); JButton b3 = new JButton("Logistics Requests");
 	Supervisor(String UserName,int UserID, String Password, String name, String address, String userType,String department, String dob, int status)
 	{
 		super(UserName,UserID,Password,name,address,userType,department,dob,status);
+	}
+	
+	public String getNames(int i)
+	{
+		return leave.get(i).getWhose();
+	}
+	
+	public int getSizeLeave()
+	{
+		return leave.size();
 	}
 	public void supGUI()
 	{
@@ -79,7 +92,7 @@ public class Supervisor extends User {
 				frame.setVisible(true);
 			}
 			if(e.getActionCommand().equals("Send Leave")){
-				ArrayList<Leave> leave= new ArrayList<Leave>();
+				
 				
 				for(int i=0;i<6;i++)
 				{if(buttons[i].getText()!="Send Leave")buttons[i].setBackground(null);
@@ -106,9 +119,9 @@ public class Supervisor extends User {
 				}
 				JButton b= new JButton(); 
 				b.setText("Submit");
-				Leave mmm = new Leave(txt[0].getText(),txt[1].getText(),txt[2].getText(),txt[3].getText());
-				leave.add(mmm);
-				System.out.println(leave.get(0).get_to_whom());
+
+
+				//System.out.println(leave.get(0).get_to_whom());
 				leavepanel.add(b);
 				Frame1.add(leavepanel);
 				Frame1.setVisible(true);
@@ -117,6 +130,21 @@ public class Supervisor extends User {
 				b.addActionListener(new ActionListener()
 				{
 					public void actionPerformed(ActionEvent e){
+					// System.out.println(txt[1].getText()+ txt[1].getText().equals(txt[2].getText()));
+		if(!txt[1].getText().equals(txt[2].getText()))	
+		{			Leave mmm = new Leave(txt[0].getText(),txt[1].getText(),txt[2].getText(),txt[3].getText(),-1,nameleave);		leave.add(mmm);
+		try
+		{
+		FileWriter fr= new FileWriter("leave.txt",true);
+		BufferedWriter br= new BufferedWriter(fr);
+		PrintWriter out= new PrintWriter(br);
+		out.write(txt[0].getText()+","+txt[1].getText()+","+txt[2].getText()+","+txt[3].getText()+",-1,"+nameleave);
+		out.write("\n");
+		out.close();
+		}
+		catch(Exception ex)
+		{ex.printStackTrace();}
+		}
 						Frame1.setVisible(false);
 						frame.setVisible(true);
 					}});
