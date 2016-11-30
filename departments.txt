@@ -1,0 +1,6 @@
+//department name, Supervisor, Staff members
+Housekeeping,hsuper,user1
+Electricity,esuper,user2
+Security,ssuper,user3
+AudioVideo,avsuper,user4
+HVAC,hvacsuper,user5

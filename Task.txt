@@ -1,0 +1,5 @@
+A-104;61;Housekeeping;Broom, Bucket, Mop, Duster;Tue Nov 25; Wed Dec 18;Room Cleaning,COMPLETE;user1,user2
+A-304;41;Electricity;Item1, item2;Tue Sept 25; ;AC not working;ONGOING;user3
+A-76;15;Security;itema, items, item5;Sat Apil 25;Sun May 9;Camera not Working;COMPLETE;user6
+B-65;16;Audio/Video;t,t1,t2,t4;Tue June 30; Wed Dec 18;TV Repair;COMPLETE;user7,user8
+R-78;11;HVAC;r1,r4,r5,r6;Tue Nov 25; ;Purpose;NOT_STARTED;user4
