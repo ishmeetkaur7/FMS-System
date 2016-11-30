@@ -11,7 +11,6 @@ class system extends JFrame
 	JPanel panel = new JPanel();
 	static Admin admin = Admin.getInstance();
 	ArrayList<User> users= new ArrayList<User>();
-	ArrayList<Leave> leave= new ArrayList<Leave>();
 	int noUsers;
 	
 	public int check(String string)
@@ -37,98 +36,6 @@ class system extends JFrame
 		if(ch==1){mmm = users.get(j);mmm.login();}
 		else {JOptionPane.showMessageDialog(null, "Wrong credentials entered. Try logging in again.", "Error", JOptionPane.ERROR_MESSAGE);
 		mainGUI();}
-		
-	}
-	
-	public void readFileLeave()
-	{
-	BufferedReader br= null;
-    try
-    {
-    br= new BufferedReader(new FileReader("leave.txt"));
-    String line=null; 
-    while((line=br.readLine())!=null)
-    {
-	Leave mmm= new Leave(null,null,null,null,0,null);
-	String lines[]=line.split(",");
-	String name =lines[0];
-	String dob=lines[1];
-	String addr=lines[2];
-	String type=lines[3];
-	int x =Integer.parseInt(lines[4]);
-	String dept=lines[5];
-	mmm= new Leave(name,dob,addr,type,x,dept);
-	leave.add(mmm);
-    }
-	//noUsers=users.size();
-    }catch(FileNotFoundException ex) {ex.printStackTrace();}
-    catch(IOException ex) {ex.printStackTrace();}
-    finally
-    {
-    try{if(br!=null) br.close();}
-    catch(IOException ex) {ex.printStackTrace();}
-    } 
-	}
-	
-	public void setUserStatusLeave(int x)
-	{
-		readFileLeave();
-		leave.get(x).setStatus(1);
-		//update in file as well.
-		//System.out.println(leave.get(x).getApproved());
-		try
-		{
-		FileWriter fr= new FileWriter("leave.txt");
-		BufferedWriter br= new BufferedWriter(fr);
-		PrintWriter out= new PrintWriter(br);
-		for(int i=0;i<leave.size();i++)
-		{
-			Leave mmm=leave.get(i);
-			//System.out.println(mmm.getTitle());
-			//System.out.println(mmm.getApproved());
-			out.write(mmm.get_to_whom() +",");
-			out.write(mmm.getReason()+",");
-			out.write(mmm.getFrom()+",");
-			out.write(mmm.getTo()+",");
-			out.write(mmm.getStatus()+",");
-			out.write(mmm.getWhose());
-			out.write("\n");
-		}
-		out.close();
-		}
-		catch(Exception e)
-		{e.printStackTrace();}		
-		
-	}
-	
-	public void removeUserLeave(int x)
-	{
-		readFileLeave();
-		try
-		{
-		FileWriter fr= new FileWriter("leave.txt");
-		BufferedWriter br= new BufferedWriter(fr);
-		PrintWriter out= new PrintWriter(br);
-		for(int i=0;i<leave.size();i++)
-		{
-			if(i!=x)
-			{
-			Leave mmm=leave.get(i);
-			//System.out.println(mmm.getTitle());
-			//System.out.println(mmm.getApproved());
-			out.write(mmm.get_to_whom() +",");
-			out.write(mmm.getReason()+",");
-			out.write(mmm.getFrom()+",");
-			out.write(mmm.getTo()+",");
-			out.write(mmm.getStatus()+",");
-			out.write(mmm.getWhose());
-			out.write("\n");
-			}
-		}
-		out.close();
-		}
-		catch(Exception e)
-		{e.printStackTrace();}	
 		
 	}
 	

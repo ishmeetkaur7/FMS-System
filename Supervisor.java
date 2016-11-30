@@ -132,7 +132,8 @@ public class Supervisor extends User {
 					public void actionPerformed(ActionEvent e){
 					// System.out.println(txt[1].getText()+ txt[1].getText().equals(txt[2].getText()));
 		if(!txt[1].getText().equals(txt[2].getText()))	
-		{			Leave mmm = new Leave(txt[0].getText(),txt[1].getText(),txt[2].getText(),txt[3].getText(),-1,nameleave);		leave.add(mmm);
+		{			Leave mmm = new Leave(txt[0].getText(),txt[1].getText(),txt[2].getText(),txt[3].getText(),-1,nameleave);		
+					leave.add(mmm);
 		try
 		{
 		FileWriter fr= new FileWriter("leave.txt",true);

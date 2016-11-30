@@ -1,3 +1,4 @@
+//@author:Shreya Sharma(2015096) Ishmeet Kaur(2015042)
 import javax.swing.*;
 import java.util.*;
 import java.awt.*;
@@ -9,7 +10,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 public class Staff extends User{
-	JFrame frame = new JFrame("Staff");JPanel kpanel = new JPanel();JPanel mrpanel = new JPanel();
+	JFrame frame = new JFrame("Supervisor");JPanel kpanel = new JPanel();JPanel mrpanel = new JPanel();
 	JPanel rpanel = new JPanel();JPanel mpanel = new JPanel();
 	JPanel panel = new JPanel(new FlowLayout());
 	JButton buttons[] = new JButton[6];JPanel leavepanel = new JPanel();
@@ -20,53 +21,55 @@ public class Staff extends User{
 	{
 		super(UserName,UserID,Password,name,address,userType,department,dob,status);
 	}
-	public void readFileTasks()
+	
+	public  ArrayList<String[]> readFile()
     {
     BufferedReader br= null;
+    ArrayList<String[]> arr = new ArrayList<String[]>();
     try
     {
+    	
     br= new BufferedReader(new FileReader("Task.txt"));
     String line=null; 
     while((line=br.readLine())!=null)
     {
-	Task mmm= new Task(null,null,0,null,null,null,null,null);
+	
 	String lines[]=line.split(";");
-	int id =Integer.parseInt(lines[1]);
-	String name =lines[0];
-	String dept=lines[2];
-	String ite=lines[3];
-	String dt1=lines[4];
-	String dt3=lines[5];
-	String purpose=lines[6];
-	//ArrayList<String> staff = lines[7];
-	//mmm= new Task(dt3,dt1,id,dept,name,ite,purpose,staff);
-	task.add(mmm);
+	arr.add(lines);
+		
     }
-	noTask=task.size();
+    
     }catch(FileNotFoundException ex) {ex.printStackTrace();}
     catch(IOException ex) {ex.printStackTrace();}
+    
     finally
     {
+    	
     try{if(br!=null) br.close();}
     catch(IOException ex) {ex.printStackTrace();}
-    }    
     }
-	public void getTaskReport(Task t){
-		JFrame ta= new JFrame(t.getTaskName());
+    System.out.println(arr.size());
+    return arr;
+    }
+	
+	public void getTaskReport(String[] str){
+		JFrame ta= new JFrame(str[0]);
 		JPanel pa = new JPanel();
+		System.out.println("YES");
 		pa.setLayout(new BoxLayout(pa,BoxLayout.Y_AXIS));
-		JLabel[] la = new JLabel[8];
-		for(int i=0;i<8;i++)
+		JLabel[] la = new JLabel[9];
+		for(int i=0;i<9;i++)
 			la[i]= new JLabel();
-		la[0].setText("Task Name :  " + t.getTaskName());//
-		la[1].setText("Task ID :  " + t.getTaskID());
-		la[2].setText("Task Department :  " + t.getTaskDept());
-		la[3].setText("Items Used :  " + t.getItems());
-		la[4].setText("Task Start Date :  " + t.getStartDate());
-		la[5].setText("Task Deadline :  " + t.getDeadline());
-		la[6].setText("Task Description :  " + t.getDes());
-		la[7].setText("Task Status :  COMPLETE");
-		for(int i=0;i<8;i++)
+		la[0].setText("Task Name :  " + str[0]);//
+		la[1].setText("Task ID :  " +str[1]);
+		la[2].setText("Task Department :  " + str[2]);
+		la[3].setText("Items Used :  " + str[3]);
+		la[4].setText("Task Start Date :  " + str[4]);
+		la[5].setText("Task Deadline :  " + str[5]);
+		la[6].setText("Task Description :  " +str[6]);
+		la[7].setText("Task Status :  "+str[7]);
+		la[8].setText("Task Staff :  "+str[8]);
+		for(int i=0;i<9;i++)
 			pa.add(la[i]);
 		ta.add(pa);
 		ta.setSize(400,200);
@@ -95,7 +98,6 @@ public class Staff extends User{
 		panel.setBackground(null);
 		date.setColumns(10);time.setColumns(8);
 		date.setEditable(false);time.setEditable(false);
-		readFileTasks();
 		frame.add(mpanel);
 		frame.setVisible(true);
 	}
@@ -172,13 +174,13 @@ public class Staff extends User{
 		if(e.getActionCommand()=="Staff"){
 			for(int i=0;i<6;i++)
 			{if(buttons[i].getText()!="Staff")buttons[i].setBackground(null);
-			else buttons[i].setBackground(Color.PINK);}buttons[5].setBackground(Color.white);
-			getTaskReport(task.get(3));
+			else buttons[i].setBackground(Color.PINK);}
+			
 		}
 		if(e.getActionCommand()=="Requests"){
 			for(int i=0;i<6;i++)
 			{if(buttons[i].getText()!="Requests")buttons[i].setBackground(null);
-			else buttons[i].setBackground(Color.PINK);}buttons[5].setBackground(Color.white);
+			else buttons[i].setBackground(Color.PINK);}
 			 JFrame Frame1 = new JFrame("Logistics Request");
 				JLabel jlabel[] = new JLabel[3];
 				JTextField txt[] = new JTextField[3];
@@ -208,7 +210,7 @@ public class Staff extends User{
 		if(e.getActionCommand()=="Reports"){
 			for(int i=0;i<6;i++)
 			{if(buttons[i].getText()!="Reports")buttons[i].setBackground(null);
-			else buttons[i].setBackground(Color.PINK);}buttons[5].setBackground(Color.white);
+			else buttons[i].setBackground(Color.PINK);}
 		}
 		if(e.getActionCommand()=="Logout"){
 			frame.remove(panel);

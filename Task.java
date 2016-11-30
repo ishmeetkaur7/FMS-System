@@ -1,5 +1,9 @@
 //@author:Shreya Sharma(2015096) Ishmeet Kaur(2015042)
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.*;
 //Task Report – ID, Task ID, Task Name, Task Description, Items used, Time Taken,
@@ -74,12 +78,30 @@ public class Task {
 		// TODO Auto-generated method stub
 		this.Des = y;
 	}
-	/*public void setStaff(ArrayList<String> s){
-		this.staff = s;
+	public void WriteFile(String n,String d,String i, String st,String de,String p,String stf)
+	{
+		try
+		{
+		FileWriter fr= new FileWriter("Task.txt",true);
+		BufferedWriter br= new BufferedWriter(fr);
+		PrintWriter out= new PrintWriter(br);
+			Random r = new Random();
+			int id = r.nextInt(1000);
+			out.write(n+";");
+			out.write(id+";");
+			out.write(d +";");
+			out.write(i +";");
+			out.write(st +";");
+			out.write(de +";");
+			out.write(p +";");
+			out.write("NOT_STARTED"+";");
+			out.write(stf);
+			out.write("\n");
+		out.close();
+		}
+		catch(Exception e)
+		{e.printStackTrace();}
+		
 	}
-	public ArrayList<String> getStaff(){
-		return this.staff;
-	}*/
-	
 }//Task Report – ID, Task ID, Task Name, Task Description, Items used, Time Taken,
 //Comments.
