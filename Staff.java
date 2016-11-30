@@ -1,4 +1,3 @@
-//@author:Shreya Sharma(2015096) Ishmeet Kaur(2015042)
 import javax.swing.*;
 import java.util.*;
 import java.awt.*;
@@ -10,7 +9,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 public class Staff extends User{
-	JFrame frame = new JFrame("Supervisor");JPanel kpanel = new JPanel();JPanel mrpanel = new JPanel();
+	JFrame frame = new JFrame("Staff");JPanel kpanel = new JPanel();JPanel mrpanel = new JPanel();
 	JPanel rpanel = new JPanel();JPanel mpanel = new JPanel();
 	JPanel panel = new JPanel(new FlowLayout());
 	JButton buttons[] = new JButton[6];JPanel leavepanel = new JPanel();
@@ -173,13 +172,13 @@ public class Staff extends User{
 		if(e.getActionCommand()=="Staff"){
 			for(int i=0;i<6;i++)
 			{if(buttons[i].getText()!="Staff")buttons[i].setBackground(null);
-			else buttons[i].setBackground(Color.PINK);}
+			else buttons[i].setBackground(Color.PINK);}buttons[5].setBackground(Color.white);
 			getTaskReport(task.get(3));
 		}
 		if(e.getActionCommand()=="Requests"){
 			for(int i=0;i<6;i++)
 			{if(buttons[i].getText()!="Requests")buttons[i].setBackground(null);
-			else buttons[i].setBackground(Color.PINK);}
+			else buttons[i].setBackground(Color.PINK);}buttons[5].setBackground(Color.white);
 			 JFrame Frame1 = new JFrame("Logistics Request");
 				JLabel jlabel[] = new JLabel[3];
 				JTextField txt[] = new JTextField[3];
@@ -209,7 +208,7 @@ public class Staff extends User{
 		if(e.getActionCommand()=="Reports"){
 			for(int i=0;i<6;i++)
 			{if(buttons[i].getText()!="Reports")buttons[i].setBackground(null);
-			else buttons[i].setBackground(Color.PINK);}
+			else buttons[i].setBackground(Color.PINK);}buttons[5].setBackground(Color.white);
 		}
 		if(e.getActionCommand()=="Logout"){
 			frame.remove(panel);
