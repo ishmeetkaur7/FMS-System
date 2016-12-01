@@ -284,38 +284,31 @@ public class Staff extends User{
 				j3.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						//code for view
-						JFrame Frame1= new JFrame("Logostics Request");
-						Frame1.setSize(300,300);
-						JLabel jlabel[] = new JLabel[4];
-						JTextField txt[] = new JTextField[4];
-						leavepanel.setLayout(new BoxLayout(leavepanel,BoxLayout.Y_AXIS));
-						String labelname[] = {"To Whom:","Reason","Frome (DD/MM/YYYY)","To (DD/MM/YYYY)"};
-						for(int i=0;i<4;i++)
-						{
-							jlabel[i] = new JLabel(labelname[i]);
-							if(i==0)
-								{txt[i]=new JTextField(getDepartment()+" Supervisor");
-								txt[i].setColumns(25);
-								txt[i].setEditable(false);}
-							else
-								{txt[i]=new JTextField(""); 
-								txt[i].setColumns(25);}
-							leavepanel.add(jlabel[i]);leavepanel.add(txt[i]);
-						}
-						JButton b= new JButton(); 
-						b.setText("Submit");
-						leavepanel.add(b);
-						Frame1.add(leavepanel);
-						Frame1.setVisible(true);
-						frame.setVisible(false);
-						
-						b.addActionListener(new ActionListener()
-						{
-							public void actionPerformed(ActionEvent e){
-								Frame1.setVisible(false);
-								frame.setVisible(true);
-							}});
-						
+						 JFrame Frame1 = new JFrame("Logistics Request");
+							JLabel jlabel[] = new JLabel[3];
+							JTextField txt[] = new JTextField[3];
+							
+							JPanel leavepanel= new JPanel();
+							Frame1.add(leavepanel);
+							leavepanel.setLayout(new BoxLayout(leavepanel,BoxLayout.Y_AXIS)); leavepanel.setVisible(true); 					Frame1.setSize(300,500);
+							JLabel l1 = new JLabel("To Whom?");JTextField j1 = new JTextField(getDepartment() + 					"Supervisor");leavepanel.add(l1);leavepanel.add(j1);j1.setEditable(false);
+							JLabel l2 = new JLabel("For Which Task?");JTextField j2 = new JTextField("System Generated Task Name and Task ID");leavepanel.add(l2);leavepanel.add(j2);j2.setEditable(false);
+							JLabel l3 = new JLabel("Logistics Request ID");JTextField j3 = new JTextField("System Gemerated");leavepanel.add(l3);leavepanel.add(j3);j3.setEditable(false);
+							JLabel l4 = new JLabel("Items(Quantities)");JTextField j4 = new JTextField("");leavepanel.add(l4);leavepanel.add(j4);j4.setEditable(true);
+							
+							JButton b= new JButton(); 
+							b.setText("Submit");
+							leavepanel.add(b);
+							Frame1.add(leavepanel);
+							Frame1.setVisible(true);
+							frame.setVisible(false);
+							
+							b.addActionListener(new ActionListener()
+							{
+								public void actionPerformed(ActionEvent e){
+									Frame1.setVisible(false);
+									frame.setVisible(true);
+								}});
 					}
 				});
 				
