@@ -3,13 +3,7 @@ import javax.swing.*;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.text.SimpleDateFormat;
 
 public class Staff extends User{
@@ -67,35 +61,65 @@ public class Staff extends User{
     catch(IOException ex) {ex.printStackTrace();}
     }    
     }
-
-	public  ArrayList<String[]> readFile()
+	public  ArrayList<String[]> readFileDept(String dept)
     {
-    BufferedReader br= null;
-    ArrayList<String[]> arr = new ArrayList<String[]>();
-    try
-    {
-    	
-    br= new BufferedReader(new FileReader("Task.txt"));
-    String line=null; 
-    while((line=br.readLine())!=null)
-    {
+		    BufferedReader br= null;
+		    ArrayList<String[]> arr = new ArrayList<String[]>();
+		    try
+		    {
+		    	
+		    br= new BufferedReader(new FileReader("Task.txt"));
+		    String line=null; 
+		    while((line=br.readLine())!=null)
+		    {
+			
+			String lines[]=line.split(";");
+			if(lines[2].equals(dept))
+				arr.add(lines);
+				
+		    }
+		    
+		    }catch(FileNotFoundException ex) {ex.printStackTrace();}
+		    catch(IOException ex) {ex.printStackTrace();}
+		    
+		    finally
+		    {
+		    	
+		    try{if(br!=null) br.close();}
+		    catch(IOException ex) {ex.printStackTrace();}
+		    }
+		    System.out.println(arr.size());
+		    return arr;
+    }
 	
-	String lines[]=line.split(";");
-	arr.add(lines);
-		
-    }
-    
-    }catch(FileNotFoundException ex) {ex.printStackTrace();}
-    catch(IOException ex) {ex.printStackTrace();}
-    
-    finally
-    {
+	public  ArrayList<String[]> readFile()
+	    {
+	    BufferedReader br= null;
+	    ArrayList<String[]> arr = new ArrayList<String[]>();
+	    try
+	    {
     	
-    try{if(br!=null) br.close();}
-    catch(IOException ex) {ex.printStackTrace();}
-    }
-    System.out.println(arr.size());
-    return arr;
+	    br= new BufferedReader(new FileReader("Task.txt"));
+	    String line=null; 
+	    while((line=br.readLine())!=null)
+	    {
+		
+		String lines[]=line.split(";");
+		arr.add(lines);
+			
+	    }
+	    
+	    }catch(FileNotFoundException ex) {ex.printStackTrace();}
+	    catch(IOException ex) {ex.printStackTrace();}
+	    
+	    finally
+	    {
+	    	
+	    try{if(br!=null) br.close();}
+	    catch(IOException ex) {ex.printStackTrace();}
+	    }
+	    System.out.println(arr.size());
+	    return arr;
     }
 	
 	public void getTaskReport(String[] str){
@@ -260,7 +284,38 @@ public class Staff extends User{
 				j3.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						//code for view
-						getTaskReport(gt);
+						JFrame Frame1= new JFrame("Logostics Request");
+						Frame1.setSize(300,300);
+						JLabel jlabel[] = new JLabel[4];
+						JTextField txt[] = new JTextField[4];
+						leavepanel.setLayout(new BoxLayout(leavepanel,BoxLayout.Y_AXIS));
+						String labelname[] = {"To Whom:","Reason","Frome (DD/MM/YYYY)","To (DD/MM/YYYY)"};
+						for(int i=0;i<4;i++)
+						{
+							jlabel[i] = new JLabel(labelname[i]);
+							if(i==0)
+								{txt[i]=new JTextField(getDepartment()+" Supervisor");
+								txt[i].setColumns(25);
+								txt[i].setEditable(false);}
+							else
+								{txt[i]=new JTextField(""); 
+								txt[i].setColumns(25);}
+							leavepanel.add(jlabel[i]);leavepanel.add(txt[i]);
+						}
+						JButton b= new JButton(); 
+						b.setText("Submit");
+						leavepanel.add(b);
+						Frame1.add(leavepanel);
+						Frame1.setVisible(true);
+						frame.setVisible(false);
+						
+						b.addActionListener(new ActionListener()
+						{
+							public void actionPerformed(ActionEvent e){
+								Frame1.setVisible(false);
+								frame.setVisible(true);
+							}});
+						
 					}
 				});
 				
