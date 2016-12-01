@@ -4,9 +4,12 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 
 public class Staff extends User{
@@ -14,7 +17,7 @@ public class Staff extends User{
 	JPanel rpanel = new JPanel();JPanel mpanel = new JPanel();
 	JPanel panel = new JPanel(new FlowLayout());
 	JButton buttons[] = new JButton[6];JPanel leavepanel = new JPanel();
-	String name[] = {"Home","Send Leave","Staff","Requests","Reports","Logout"};
+	String name[] = {"Home","Send Leave","Tasks","Logout"};
 	ArrayList<Task> task= new ArrayList<Task>();
 	int noTask;
 	Staff(String UserName,int UserID, String Password, String name, String address, String userType,String department, String dob, int status)
@@ -87,13 +90,13 @@ public class Staff extends User{
 		frame.setSize(900,500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Event e = new Event();
-		for(int i=0;i<6;i++){
+		for(int i=0;i<4;i++){
 			buttons[i]= new JButton(name[i]);
 			buttons[i].addActionListener(e);
 			buttons[i].setActionCommand(name[i]);
 			panel.add(buttons[i]);
 		}
-		buttons[5].setBackground(Color.white);
+		buttons[3].setBackground(Color.white);
 		panel.add(date);panel.add(time);
 		panel.setBackground(null);
 		date.setColumns(10);time.setColumns(8);
@@ -104,10 +107,10 @@ public class Staff extends User{
 	public class Event implements ActionListener{
 		public void actionPerformed(ActionEvent e)
 		{if(e.getActionCommand()=="Home"){
-			for(int i=0;i<6;i++)
+			for(int i=0;i<4;i++)
 			{if(buttons[i].getText()!="Home")buttons[i].setBackground(null);
 			else buttons[i].setBackground(Color.PINK);}
-			buttons[5].setBackground(Color.white);
+			buttons[3].setBackground(Color.white);
 			kpanel.removeAll();
 			kpanel.revalidate();
 			rpanel.removeAll();
@@ -132,10 +135,10 @@ public class Staff extends User{
 			frame.setVisible(true);
 		}
 		if(e.getActionCommand()=="Send Leave"){
-			for(int i=0;i<6;i++)
+			for(int i=0;i<4;i++)
 			{if(buttons[i].getText()!="Send Leave")buttons[i].setBackground(null);
 			else buttons[i].setBackground(Color.PINK);}
-			buttons[5].setBackground(Color.white);
+			buttons[3].setBackground(Color.white);
 			JFrame Frame1 = new JFrame("Leave Form");
 			JLabel jlabel[] = new JLabel[4];
 			JTextField txt[] = new JTextField[4];
@@ -171,14 +174,62 @@ public class Staff extends User{
 			
 		}	
 		
-		if(e.getActionCommand()=="Staff"){
-			for(int i=0;i<6;i++)
+		if(e.getActionCommand()=="Tasks"){
+			for(int i=0;i<4;i++)
 			{if(buttons[i].getText()!="Staff")buttons[i].setBackground(null);
 			else buttons[i].setBackground(Color.PINK);}
+			buttons[3].setBackground(Color.white);
+			rpanel.removeAll();
+			rpanel.revalidate();
+			kpanel.removeAll();
+			kpanel.revalidate();
+			rpanel.setLayout(new BoxLayout(rpanel,BoxLayout.Y_AXIS));
+			ArrayList<String[]> arr = new ArrayList<String[]>();
+			arr=readFile();
+			System.out.println(arr.size());
+			for(int i=0;i<arr.size();i++)
+				System.out.println(arr.get(i)[0]);
+			for(int i=0;i<arr.size();i++)
+			{
+				System.out.println("ec");
+				JLabel y = new JLabel(arr.get(i)[0]);
+				JButton j1 = new JButton("Generate Task Report");
+				JButton j2= new JButton("Update Task Status");
+				JButton j3= new JButton("Send Logistics Request");
+				JPanel pan = new JPanel();
+				pan.add(y);pan.add(j1);pan.add(j2);
+				rpanel.add(pan);int k = arr.size();
+				String[] gt = arr.get(i);int index = i;
+				j1.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						getTaskReport(gt);
+					}
+				});
+				j2.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						Object[] options = {"ONGOING","COMPLETE"};
+						int n = JOptionPane.showOptionDialog(frame,"Update"+ "Status",gt[0],JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
+						if(n==JOptionPane.YES_OPTION){gt[7]="ONGOING";}
+						if(n==JOptionPane.NO_OPTION){gt[7]="COMPLETE";}	
+						updateFile(gt[7]);
+					}
+				});
+				j3.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						//code for view
+						getTaskReport(gt);
+					}
+				});
+				
+				
+			}
+			mpanel.add(rpanel);
+		
+			frame.setVisible(true);
 			
 		}
 		if(e.getActionCommand()=="Requests"){
-			for(int i=0;i<6;i++)
+			for(int i=0;i<4;i++)
 			{if(buttons[i].getText()!="Requests")buttons[i].setBackground(null);
 			else buttons[i].setBackground(Color.PINK);}
 			 JFrame Frame1 = new JFrame("Logistics Request");
@@ -208,7 +259,7 @@ public class Staff extends User{
 					}});
 		}			
 		if(e.getActionCommand()=="Reports"){
-			for(int i=0;i<6;i++)
+			for(int i=0;i<4;i++)
 			{if(buttons[i].getText()!="Reports")buttons[i].setBackground(null);
 			else buttons[i].setBackground(Color.PINK);}
 		}
@@ -221,6 +272,36 @@ public class Staff extends User{
 			S.mainGUI();
 		}
 		
+		}
+		public void updateFile(String y)
+		{
+			ArrayList<String[]> arr = new ArrayList<String[]>();
+			arr=readFile();
+			System.out.print(arr.size());
+			for(int l=0;l<arr.size();l++)
+			{
+			try
+			{
+				FileWriter fr= new FileWriter("Task.txt");
+				BufferedWriter br= new BufferedWriter(fr);
+				PrintWriter out= new PrintWriter(br);
+					Random r = new Random();
+					int id = r.nextInt(1000);
+					out.write(arr.get(l)[0]+";");
+					out.write(arr.get(l)[1]+";");
+					out.write(arr.get(l)[2]+";");
+					out.write(arr.get(l)[3]+";");
+					out.write(arr.get(l)[4]+";");
+					out.write(arr.get(l)[5]+";");
+					out.write(arr.get(l)[6]+";");
+					out.write(y+";");
+					out.write(arr.get(l)[7]);
+					out.write("\n");
+				out.close();
+				}
+				catch(Exception E)
+				{E.printStackTrace();}
+		}
 		}
 		
 		
