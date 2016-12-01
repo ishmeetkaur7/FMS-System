@@ -286,6 +286,11 @@ class system extends JFrame
 	{
 		return users.get(i).getApproved();
 	}
+	public String getDept(int i)
+	{
+		return users.get(i).getDepartment();
+	}
+	
 	
 	public String getInfo(int i)
 	{

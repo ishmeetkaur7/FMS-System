@@ -170,7 +170,7 @@ public class Supervisor extends User {
 				for( i=0;i<x;i++)
 				{
 					System.out.println(i);
-					if(s.getReq(i)==1 && s.getUserType(i).equals("staff")) {names.add(s.getName(i));info.add(s.getInfo(i)); index.add(i); }
+					if(s.getReq(i)==1 && s.getUserType(i).equals("staff")&&s.getDept(i).equals(getDepartment())) {names.add(s.getName(i));info.add(s.getInfo(i)); index.add(i); }
 				}				
 				for( i=0;i<names.size();i++)
 				{
