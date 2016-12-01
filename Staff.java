@@ -68,8 +68,6 @@ public class Staff extends User{
     }    
     }
 
-	
-	
 	public  ArrayList<String[]> readFile()
     {
     BufferedReader br= null;
@@ -180,10 +178,10 @@ public class Staff extends User{
 			frame.setVisible(true);
 		}
 		if(e.getActionCommand()=="Send Leave"){
-			for(int i=0;i<6;i++)
+			for(int i=0;i<4;i++)
 			{if(buttons[i].getText()!="Send Leave")buttons[i].setBackground(null);
 			else buttons[i].setBackground(Color.PINK);}
-			buttons[5].setBackground(Color.white);
+			buttons[3].setBackground(Color.white);
 			JFrame Frame1 = new JFrame("Leave Form");
 			JLabel jlabel[] = new JLabel[4];
 			JTextField txt[] = new JTextField[4];
@@ -218,6 +216,7 @@ public class Staff extends User{
 				}});
 			
 		}	
+		
 		if(e.getActionCommand()=="Tasks"){
 			for(int i=0;i<4;i++)
 			{if(buttons[i].getText()!="Staff")buttons[i].setBackground(null);
@@ -241,7 +240,7 @@ public class Staff extends User{
 				JButton j2= new JButton("Update Task Status");
 				JButton j3= new JButton("Send Logistics Request");
 				JPanel pan = new JPanel();
-				pan.add(y);pan.add(j1);pan.add(j2);
+				pan.add(y);pan.add(j1);pan.add(j2);pan.add(j3);
 				rpanel.add(pan);int k = arr.size();
 				String[] gt = arr.get(i);int index = i;
 				j1.addActionListener(new ActionListener(){
@@ -255,7 +254,7 @@ public class Staff extends User{
 						int n = JOptionPane.showOptionDialog(frame,"Update"+ "Status",gt[0],JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
 						if(n==JOptionPane.YES_OPTION){gt[7]="ONGOING";}
 						if(n==JOptionPane.NO_OPTION){gt[7]="COMPLETE";}	
-						updateFile(gt[7]);
+						updateFile(gt[7],gt[1]);
 					}
 				});
 				j3.addActionListener(new ActionListener(){
@@ -268,45 +267,10 @@ public class Staff extends User{
 				
 			}
 			mpanel.add(rpanel);
-		
 			frame.setVisible(true);
 			
 		}
-		if(e.getActionCommand()=="Requests"){
-			for(int i=0;i<4;i++)
-			{if(buttons[i].getText()!="Requests")buttons[i].setBackground(null);
-			else buttons[i].setBackground(Color.PINK);}
-			 JFrame Frame1 = new JFrame("Logistics Request");
-				JLabel jlabel[] = new JLabel[3];
-				JTextField txt[] = new JTextField[3];
 				
-				JPanel leavepanel= new JPanel();
-				Frame1.add(leavepanel);
-				leavepanel.setLayout(new BoxLayout(leavepanel,BoxLayout.Y_AXIS)); leavepanel.setVisible(true); Frame1.setSize(300,500);
-				JLabel l1 = new JLabel("To Whom?");JTextField j1 = new JTextField(getDepartment() + "Supervisor");leavepanel.add(l1);leavepanel.add(j1);j1.setEditable(false);
-				JLabel l2 = new JLabel("For Which Task?");JTextField j2 = new JTextField("System Generated Task Name and Task ID");leavepanel.add(l2);leavepanel.add(j2);j2.setEditable(false);
-				JLabel l3 = new JLabel("Logistics Request ID");JTextField j3 = new JTextField("System Gemerated");leavepanel.add(l3);leavepanel.add(j3);j3.setEditable(false);
-				JLabel l4 = new JLabel("Items(Quantities)");JTextField j4 = new JTextField("");leavepanel.add(l4);leavepanel.add(j4);j4.setEditable(true);
-				
-				JButton b= new JButton(); 
-				b.setText("Submit");
-				leavepanel.add(b);
-				Frame1.add(leavepanel);
-				Frame1.setVisible(true);
-				frame.setVisible(false);
-				
-				b.addActionListener(new ActionListener()
-				{
-					public void actionPerformed(ActionEvent e){
-						Frame1.setVisible(false);
-						frame.setVisible(true);
-					}});
-		}			
-		if(e.getActionCommand()=="Reports"){
-			for(int i=0;i<4;i++)
-			{if(buttons[i].getText()!="Reports")buttons[i].setBackground(null);
-			else buttons[i].setBackground(Color.PINK);}
-		}
 		if(e.getActionCommand()=="Logout"){
 			frame.remove(panel);
 			frame.dispose();
@@ -317,20 +281,19 @@ public class Staff extends User{
 		}
 		
 		}
-		public void updateFile(String y)
+		public void updateFile(String y,String u) 
 		{
 			ArrayList<String[]> arr = new ArrayList<String[]>();
 			arr=readFile();
 			System.out.print(arr.size());
-			for(int l=0;l<arr.size();l++)
-			{
 			try
 			{
-				FileWriter fr= new FileWriter("Task.txt");
-				BufferedWriter br= new BufferedWriter(fr);
-				PrintWriter out= new PrintWriter(br);
-					Random r = new Random();
-					int id = r.nextInt(1000);
+			FileWriter fr= new FileWriter("Task.txt",false);
+			BufferedWriter br= new BufferedWriter(fr);
+			PrintWriter out= new PrintWriter(br);
+			for(int l=0;l<arr.size();l++)
+			{
+				System.out.print(l);
 					out.write(arr.get(l)[0]+";");
 					out.write(arr.get(l)[1]+";");
 					out.write(arr.get(l)[2]+";");
@@ -338,19 +301,16 @@ public class Staff extends User{
 					out.write(arr.get(l)[4]+";");
 					out.write(arr.get(l)[5]+";");
 					out.write(arr.get(l)[6]+";");
-					out.write(y+";");
-					out.write(arr.get(l)[7]);
+					if(arr.get(l)[1].equals(u))
+						out.write(y+";");
+					else
+						out.write(arr.get(l)[7]+";");
+					out.write(arr.get(l)[8]);
 					out.write("\n");
-				out.close();
-				}
+				
+				}out.close();}
+			
 				catch(Exception E)
-				{E.printStackTrace();}
-		}
-		}
-		
-		
-		
-	}
+				{E.printStackTrace();}}}}
 	
 
-}
