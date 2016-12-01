@@ -10,8 +10,8 @@ class system extends JFrame
 	JFrame Frame1 = new JFrame("Registration Form");
 	JPanel panel = new JPanel();
 	static Admin admin = Admin.getInstance();
-	ArrayList<User> users= new ArrayList<User>();
 	ArrayList<Leave> leave= new ArrayList<Leave>();
+	ArrayList<User> users= new ArrayList<User>();
 	int noUsers;
 	
 	public int check(String string)
@@ -32,14 +32,14 @@ class system extends JFrame
 		for(int i =0;i<users.size();i++)
 		{
 			mmm = users.get(i);
-			if(string.equals(mmm.getUserName())&& pass.equals(mmm.getPassword())){ch=1;j=i;}
+			if(string.equals(mmm.getUserName())&& pass.equals(mmm.getPassword())&&mmm.getApproved()==1){ch=1;j=i;}
 		}
 		if(ch==1){mmm = users.get(j);mmm.login();}
 		else {JOptionPane.showMessageDialog(null, "Wrong credentials entered. Try logging in again.", "Error", JOptionPane.ERROR_MESSAGE);
 		mainGUI();}
 		
 	}
-	
+
 	public void readFileLeave()
 	{
 	BufferedReader br= null;
@@ -69,69 +69,6 @@ class system extends JFrame
     catch(IOException ex) {ex.printStackTrace();}
     } 
 	}
-	
-	public void setUserStatusLeave(int x)
-	{
-		readFileLeave();
-		leave.get(x).setStatus(1);
-		//update in file as well.
-		//System.out.println(leave.get(x).getApproved());
-		try
-		{
-		FileWriter fr= new FileWriter("leave.txt");
-		BufferedWriter br= new BufferedWriter(fr);
-		PrintWriter out= new PrintWriter(br);
-		for(int i=0;i<leave.size();i++)
-		{
-			Leave mmm=leave.get(i);
-			//System.out.println(mmm.getTitle());
-			//System.out.println(mmm.getApproved());
-			out.write(mmm.get_to_whom() +",");
-			out.write(mmm.getReason()+",");
-			out.write(mmm.getFrom()+",");
-			out.write(mmm.getTo()+",");
-			out.write(mmm.getStatus()+",");
-			out.write(mmm.getWhose());
-			out.write("\n");
-		}
-		out.close();
-		}
-		catch(Exception e)
-		{e.printStackTrace();}		
-		
-	}
-	
-	public void removeUserLeave(int x)
-	{
-		readFileLeave();
-		try
-		{
-		FileWriter fr= new FileWriter("leave.txt");
-		BufferedWriter br= new BufferedWriter(fr);
-		PrintWriter out= new PrintWriter(br);
-		for(int i=0;i<leave.size();i++)
-		{
-			if(i!=x)
-			{
-			Leave mmm=leave.get(i);
-			//System.out.println(mmm.getTitle());
-			//System.out.println(mmm.getApproved());
-			out.write(mmm.get_to_whom() +",");
-			out.write(mmm.getReason()+",");
-			out.write(mmm.getFrom()+",");
-			out.write(mmm.getTo()+",");
-			out.write(mmm.getStatus()+",");
-			out.write(mmm.getWhose());
-			out.write("\n");
-			}
-		}
-		out.close();
-		}
-		catch(Exception e)
-		{e.printStackTrace();}	
-		
-	}
-	
 	public void readFileUsers()
     {
     BufferedReader br= null;
@@ -168,7 +105,6 @@ class system extends JFrame
     catch(IOException ex) {ex.printStackTrace();}
     }    
     }
-	
 	public void setUserStatus(int x)
 	{
 		users.get(x).setApproved(1);
@@ -202,6 +138,66 @@ class system extends JFrame
 		{e.printStackTrace();}
 	}
 	
+	public void setUserStatusLeave(int x)
+	{
+		readFileLeave();
+		leave.get(x).setStatus(1);
+		//update in file as well.
+		//System.out.println(leave.get(x).getApproved());
+		try
+		{
+		FileWriter fr= new FileWriter("leave.txt");
+		BufferedWriter br= new BufferedWriter(fr);
+		PrintWriter out= new PrintWriter(br);
+		for(int i=0;i<leave.size();i++)
+		{
+			Leave mmm=leave.get(i);
+			//System.out.println(mmm.getTitle());
+			//System.out.println(mmm.getApproved());
+			out.write(mmm.get_to_whom() +",");
+			out.write(mmm.getReason()+",");
+			out.write(mmm.getFrom()+",");
+			out.write(mmm.getTo()+",");
+			out.write(mmm.getStatus()+",");
+			out.write(mmm.getWhose());
+			out.write("\n");
+		}
+		out.close();
+		}
+		catch(Exception e)
+		{e.printStackTrace();}		
+		
+	}
+	public void removeUserLeave(int x)
+	{
+		readFileLeave();
+		try
+		{
+		FileWriter fr= new FileWriter("leave.txt");
+		BufferedWriter br= new BufferedWriter(fr);
+		PrintWriter out= new PrintWriter(br);
+		for(int i=0;i<leave.size();i++)
+		{
+			if(i!=x)
+			{
+			Leave mmm=leave.get(i);
+			//System.out.println(mmm.getTitle());
+			//System.out.println(mmm.getApproved());
+			out.write(mmm.get_to_whom() +",");
+			out.write(mmm.getReason()+",");
+			out.write(mmm.getFrom()+",");
+			out.write(mmm.getTo()+",");
+			out.write(mmm.getStatus()+",");
+			out.write(mmm.getWhose());
+			out.write("\n");
+			}
+		}
+		out.close();
+		}
+		catch(Exception e)
+		{e.printStackTrace();}	
+		
+	}
 	public ArrayList<User> getRequests() {readFileUsers();return users;}
 	
 	
