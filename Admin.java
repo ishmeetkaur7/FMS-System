@@ -406,11 +406,98 @@ public class Admin extends User{
 				mrpanel.removeAll();
 				mrpanel.revalidate();
 				mrpanel.setLayout(new BoxLayout(mrpanel,BoxLayout.Y_AXIS));
-				for(int i=0;i<5;i++)
+				//read leaves from file.
+				ArrayList<Leave> leave= new ArrayList<>();
+	BufferedReader br= null;
+    try
+    {
+    br= new BufferedReader(new FileReader("leave.txt"));
+    String line=null; 
+    while((line=br.readLine())!=null)
+    {
+	Leave mmm= new Leave(null,null,null,null,0,null);
+	String lines[]=line.split(",");
+	String name =lines[0];
+	String dob=lines[1];
+	String addr=lines[2];
+	String type=lines[3];
+	int x =Integer.parseInt(lines[4]);
+	String dept=lines[5];
+	mmm= new Leave(name,dob,addr,type,x,dept);
+	if(x==-1)leave.add(mmm);
+    }
+	//noUsers=users.size();
+    }catch(FileNotFoundException ex) {ex.printStackTrace();}
+    catch(IOException ex) {ex.printStackTrace();}
+    finally
+    {
+    try{if(br!=null) br.close();}
+    catch(IOException ex) {ex.printStackTrace();}
+    } 
+ 
+				for(int i=0;i<leave.size();i++)
 				{
 					JPanel lpanel = new JPanel();JButton a = new JButton("Approve");
 					JButton r = new JButton("Reject");JButton v = new JButton("view");
-					JLabel t = new JLabel("Will you dance ?");v.addActionListener(new Event());
+					JLabel t = new JLabel(leave.get(i).getWhose());v.addActionListener(new Event());
+							String[] line= new String[4];
+							line[0]=leave.get(i).getWhose();
+							line[1]=leave.get(i).getReason();
+							line[2]=leave.get(i).getFrom();
+							line[3]=leave.get(i).getTo();
+					v.addActionListener(new ActionListener()
+					{
+						public void actionPerformed(ActionEvent e)
+						{
+							//String[] line = str.split(",",-1);
+
+							JFrame ta= new JFrame(line[0]);
+							JPanel pa = new JPanel();
+							pa.setLayout(new BoxLayout(pa,BoxLayout.Y_AXIS));
+							JLabel[] la = new JLabel[8];
+							for(int i=0;i<4;i++)
+								la[i]= new JLabel();
+							la[0].setText("Username :  " +line[0] );//
+							la[1].setText("Reason :  " + line[1]);
+							la[2].setText("From :  " +line[2] );
+							la[3].setText("To :  " + line[3]);
+							for(int i=0;i<4;i++)
+								pa.add(la[i]);
+							ta.add(pa);
+							ta.setSize(400,200);
+							ta.setVisible(true);
+						}
+					});			
+					
+					int chu= i;
+					system s= new system();
+//					Leave l = leave.get(0);
+					a.addActionListener(new ActionListener()
+					{
+						public void actionPerformed(ActionEvent e)
+						{
+							JOptionPane.showMessageDialog(null, "Approved");
+							t.setText(line[0] + "'s leave approved.");
+							System.out.println(t.getText());
+							a.setVisible(false); r.setVisible(false); v.setVisible(false);
+							//set status to 1 in file.
+							s.setUserStatusLeave(chu);
+
+						}
+					});
+					
+					r.addActionListener(new ActionListener()
+					{
+						public void actionPerformed(ActionEvent e)
+						{
+							JOptionPane.showMessageDialog(null, "Rejected");
+							t.setText(line[0] + "'s leave rejected.");
+							System.out.println(t.getText());
+							a.setVisible(false); r.setVisible(false); v.setVisible(false);
+							s.removeUserLeave(chu);
+						}
+					});
+					
 					lpanel.add(t);a.setBackground(Color.green);r.setBackground(Color.red);
 					lpanel.add(a);a.setActionCommand("approve");v.setBackground(Color.CYAN);
 					lpanel.add(r);r.setActionCommand("reject");a.addActionListener(new Event());

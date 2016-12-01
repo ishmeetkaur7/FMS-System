@@ -18,12 +18,57 @@ public class Staff extends User{
 	JPanel panel = new JPanel(new FlowLayout());
 	JButton buttons[] = new JButton[6];JPanel leavepanel = new JPanel();
 	String name[] = {"Home","Send Leave","Tasks","Logout"};
+	String nameleave= this.getUserName();
+	String name3= this.getDepartment()+ " Supervisor";
 	ArrayList<Task> task= new ArrayList<Task>();
+	ArrayList<Leave> leave= new ArrayList<Leave>();
 	int noTask;
 	Staff(String UserName,int UserID, String Password, String name, String address, String userType,String department, String dob, int status)
 	{
 		super(UserName,UserID,Password,name,address,userType,department,dob,status);
 	}
+	public String getNames(int i)
+	{
+		return leave.get(i).getWhose();
+	}
+	
+	public int getSizeLeave()
+	{
+		return leave.size();
+	}
+	public void readFileTasks()
+    {
+    BufferedReader br= null;
+    try
+    {
+    br= new BufferedReader(new FileReader("Task.txt"));
+    String line=null; 
+    while((line=br.readLine())!=null)
+    {
+	Task mmm= new Task(null,null,0,null,null,null,null,null);
+	String lines[]=line.split(";");
+	int id =Integer.parseInt(lines[1]);
+	String name =lines[0];
+	String dept=lines[2];
+	String ite=lines[3];
+	String dt1=lines[4];
+	String dt3=lines[5];
+	String purpose=lines[6];
+	//ArrayList<String> staff = lines[7];
+	//mmm= new Task(dt3,dt1,id,dept,name,ite,purpose,staff);
+	task.add(mmm);
+    }
+	noTask=task.size();
+    }catch(FileNotFoundException ex) {ex.printStackTrace();}
+    catch(IOException ex) {ex.printStackTrace();}
+    finally
+    {
+    try{if(br!=null) br.close();}
+    catch(IOException ex) {ex.printStackTrace();}
+    }    
+    }
+
+	
 	
 	public  ArrayList<String[]> readFile()
     {
@@ -135,10 +180,10 @@ public class Staff extends User{
 			frame.setVisible(true);
 		}
 		if(e.getActionCommand()=="Send Leave"){
-			for(int i=0;i<4;i++)
+			for(int i=0;i<6;i++)
 			{if(buttons[i].getText()!="Send Leave")buttons[i].setBackground(null);
 			else buttons[i].setBackground(Color.PINK);}
-			buttons[3].setBackground(Color.white);
+			buttons[5].setBackground(Color.white);
 			JFrame Frame1 = new JFrame("Leave Form");
 			JLabel jlabel[] = new JLabel[4];
 			JTextField txt[] = new JTextField[4];
@@ -173,7 +218,6 @@ public class Staff extends User{
 				}});
 			
 		}	
-		
 		if(e.getActionCommand()=="Tasks"){
 			for(int i=0;i<4;i++)
 			{if(buttons[i].getText()!="Staff")buttons[i].setBackground(null);
