@@ -170,7 +170,7 @@ public class Supervisor extends User {
 				for( i=0;i<x;i++)
 				{
 					System.out.println(i);
-					if(s.getReq(i)==1 && s.getUserType(i).equals("staff")&&s.getDept(i).equals(getDepartment())) {names.add(s.getName(i));info.add(s.getInfo(i)); index.add(i); }
+					if(s.getReq(i)==1 && s.getUserType(i).equals("staff")) {names.add(s.getName(i));info.add(s.getInfo(i)); index.add(i); }
 				}				
 				for( i=0;i<names.size();i++)
 				{
@@ -508,29 +508,110 @@ public class Supervisor extends User {
 				mrpanel.removeAll();
 				mrpanel.revalidate();
 				mrpanel.setLayout(new BoxLayout(mrpanel,BoxLayout.Y_AXIS));
-				for(int i=0;i<3;i++)
+				ArrayList<Logistics> leave= new ArrayList<>();
+				ArrayList<Integer> index= new ArrayList<>(); int it=0;
+	BufferedReader br= null;
+    try
+    {
+    br= new BufferedReader(new FileReader("logistics.txt"));
+    String line=null; 
+    while((line=br.readLine())!=null)
+    {
+	Logistics mmm= new Logistics(null,null,null,0,0,0);
+	String lines[]=line.split(";");
+	String name =lines[0];
+	String dob=lines[1];
+	String addr=lines[2];
+	int x =Integer.parseInt(lines[3]);
+	int y =Integer.parseInt(lines[4]);
+	int z =Integer.parseInt(lines[5]);
+	mmm= new Logistics(name,dob,addr,x,y,z);
+	if(y==-1 && namee.equals(name)) {leave.add(mmm); index.add(it); };
+	it++;
+    }
+	//noUsers=users.size();
+    }catch(FileNotFoundException ex) {ex.printStackTrace();}
+    catch(IOException ex) {ex.printStackTrace();}
+    finally
+    {
+    try{if(br!=null) br.close();}
+    catch(IOException ex) {ex.printStackTrace();}
+    } 
+ 
+				for(int i=0;i<leave.size();i++)
 				{
 					JPanel lpanel = new JPanel();JButton a = new JButton("Approve");
 					JButton r = new JButton("Reject");JButton v = new JButton("view");
-					JLabel t = new JLabel("please lets go out?");
+					JLabel t = new JLabel(leave.get(i).getTask());v.addActionListener(new Event());
+							String[] line= new String[3];
+							line[0]=leave.get(i).getTask();
+							//line[1]=leave.get(i).getID();
+							int hello=leave.get(i).getID();
+							line[2]=leave.get(i).getItems();
+							//line[3]=leave.get(i).getTo();
+					v.addActionListener(new ActionListener()
+					{
+						public void actionPerformed(ActionEvent e)
+						{
+							//String[] line = str.split(",",-1);
+
+							JFrame ta= new JFrame(line[0]);
+							JPanel pa = new JPanel();
+							pa.setLayout(new BoxLayout(pa,BoxLayout.Y_AXIS));
+							JLabel[] la = new JLabel[8];
+							for(int i=0;i<3;i++)
+								la[i]= new JLabel();
+							la[0].setText("Task name :  " +line[0] );//
+							la[1].setText("Request ID :  " + hello);
+							la[2].setText("Items :  " +line[2] );
+							//la[3].setText("To :  " + line[3]);
+							for(int i=0;i<3;i++)
+								pa.add(la[i]);
+							ta.add(pa);
+							ta.setSize(400,200);
+							ta.setVisible(true);
+						}
+					});			
+					
+					int chu= index.get(i);
+					system s= new system();
+//					Leave l = leave.get(0);
+					a.addActionListener(new ActionListener()
+					{
+						public void actionPerformed(ActionEvent e)
+						{
+							JOptionPane.showMessageDialog(null, "Approved");
+							t.setText(line[0] + "'s logistics approved.");
+							System.out.println(t.getText());
+							a.setVisible(false); r.setVisible(false); v.setVisible(false);
+							//set status to 1 in file.
+							s.setUserStatusLog(chu);
+
+						}
+					});
+					
+					r.addActionListener(new ActionListener()
+					{
+						public void actionPerformed(ActionEvent e)
+						{
+							JOptionPane.showMessageDialog(null, "Rejected");
+							t.setText(line[0] + "'s logistics rejected.");
+							System.out.println(t.getText());
+							a.setVisible(false); r.setVisible(false); v.setVisible(false);
+							s.removeUserLog(chu);
+						}
+					});
+					
 					lpanel.add(t);a.setBackground(Color.green);r.setBackground(Color.red);
 					lpanel.add(a);a.setActionCommand("approve");v.setBackground(Color.CYAN);
-					lpanel.add(r);r.setActionCommand("reject");
-					lpanel.add(v);v.setActionCommand("view");
+					lpanel.add(r);r.setActionCommand("reject");a.addActionListener(new Event());
+					lpanel.add(v);v.setActionCommand("view");r.addActionListener(new Event());
 					mrpanel.add(lpanel);
 				}
 				rpanel.add(mrpanel);
 				frame.setVisible(true);
-			}
-			if(e.getActionCommand()=="approve"){
-				
 				}
-			if(e.getActionCommand()=="reject"){
-				
-				}
-			if(e.getActionCommand()=="view"){
-				
-			}
+	
 			
 	}
 }

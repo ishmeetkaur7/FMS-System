@@ -25,7 +25,7 @@ public void set_to_whom(String x) {this.to_whom=x;}
 public void setTask(String x) {this.task=x;}
 public void setItems(String x) {this.items=x;}
 public void setID(int x) {this.id=x;}
-public void statusS(int x) {this.statusS=x;}
+public void setstatusS(int x) {this.statusS=x;}
 public void setstatusA(int x) {this.statusA=x;}
 
 }

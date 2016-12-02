@@ -260,6 +260,7 @@ public class Staff extends User{
 			{
 				System.out.println("ec");
 				JLabel y = new JLabel(arr.get(i)[0]);
+				String s2=arr.get(i)[0];
 				JButton j1 = new JButton("Generate Task Report");
 				JButton j2= new JButton("Update Task Status");
 				JButton j3= new JButton("Send Logistics Request");
@@ -291,7 +292,7 @@ public class Staff extends User{
 							JPanel leavepanel= new JPanel();
 							Frame1.add(leavepanel);
 							leavepanel.setLayout(new BoxLayout(leavepanel,BoxLayout.Y_AXIS)); leavepanel.setVisible(true); 					Frame1.setSize(300,500);
-							JLabel l1 = new JLabel("To Whom?");JTextField j1 = new JTextField(getDepartment() + 					"Supervisor");leavepanel.add(l1);leavepanel.add(j1);j1.setEditable(false);
+							JLabel l1 = new JLabel("To Whom?");JTextField j1 = new JTextField(getDepartment() + " Supervisor");leavepanel.add(l1);leavepanel.add(j1);j1.setEditable(false);
 							JLabel l2 = new JLabel("For Which Task?");JTextField j2 = new JTextField("System Generated Task Name and Task ID");leavepanel.add(l2);leavepanel.add(j2);j2.setEditable(false);
 							JLabel l3 = new JLabel("Logistics Request ID");JTextField j3 = new JTextField("System Gemerated");leavepanel.add(l3);leavepanel.add(j3);j3.setEditable(false);
 							JLabel l4 = new JLabel("Items(Quantities)");JTextField j4 = new JTextField("");leavepanel.add(l4);leavepanel.add(j4);j4.setEditable(true);
@@ -302,10 +303,21 @@ public class Staff extends User{
 							Frame1.add(leavepanel);
 							Frame1.setVisible(true);
 							frame.setVisible(false);
-							
+							Random rand = new Random(); int  id = rand.nextInt(50) + 1;
 							b.addActionListener(new ActionListener()
 							{
 								public void actionPerformed(ActionEvent e){
+		try
+		{
+		FileWriter fr= new FileWriter("logistics.txt",true);
+		BufferedWriter br= new BufferedWriter(fr);
+		PrintWriter out= new PrintWriter(br);
+		out.write(j1.getText()+";"+s2+";"+j4.getText()+";"+id+";-1;-1");
+		out.write("\n");
+		out.close();
+		}
+		catch(Exception ex)
+		{ex.printStackTrace();}
 									Frame1.setVisible(false);
 									frame.setVisible(true);
 								}});
@@ -361,4 +373,3 @@ public class Staff extends User{
 				catch(Exception E)
 				{E.printStackTrace();}}}}
 	
-
