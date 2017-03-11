@@ -1,10 +1,7 @@
 //@author:Shreya Sharma(2015096) Ishmeet Kaur(2015042)
 import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Random;
-
+import java.io.*;
+import java.util.*;
 import javax.swing.*;
 //Task Report – ID, Task ID, Task Name, Task Description, Items used, Time Taken,
 //Comments.
